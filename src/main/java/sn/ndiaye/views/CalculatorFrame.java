@@ -2,6 +2,9 @@ package sn.ndiaye.views;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Arrays;
 
 
 public class CalculatorFrame extends JFrame {
@@ -43,19 +46,39 @@ public class CalculatorFrame extends JFrame {
     }
 
     private void addNumberButtons() {
-        numbersPanel.add(new JButton("1"));
-        numbersPanel.add(new JButton("2"));
-        numbersPanel.add(new JButton("3"));
-        numbersPanel.add(new JButton("4"));
-        numbersPanel.add(new JButton("5"));
-        numbersPanel.add(new JButton("6"));
-        numbersPanel.add(new JButton("7"));
-        numbersPanel.add(new JButton("8"));
-        numbersPanel.add(new JButton("9"));
-        numbersPanel.add(new JButton("0"));
-        numbersPanel.add(new JButton("."));
-        numbersPanel.add(new JButton("+/-"));
+        JButton[] numbers = new JButton[10];
+        for (int i = 1; i <= 10; i++) {
+            if (i == 10)
+                i = 0;
+            numbers[i] = new JButton(String.valueOf(i));
+            numbers[i].addActionListener((ActionEvent e) -> {
+                JButton btn = (JButton) e.getSource();
+                inputDisplay.setText(inputDisplay.getText() + btn.getText());
+            });
+            numbersPanel.add(numbers[i]);
+            if (i == 0)
+                break;
+        }
+        JButton pointButton = new JButton(".");
+        JButton signButton = new JButton("+/-");
+        signButton.setName("-");
 
+        pointButton.addActionListener((ActionEvent e) -> {
+            JButton btn = (JButton)e.getSource();
+            inputDisplay.setText(inputDisplay.getText() + btn.getText());
+        });
+
+        signButton.addActionListener((ActionEvent e) -> {
+            JButton btn = (JButton)e.getSource();
+            String sign = btn.getName();
+            inputDisplay.setText(sign + inputDisplay.getText()
+                    .replace("-", ""));
+            sign = (sign.equals("-"))? "" : "-";
+            btn.setName(sign);
+        });
+
+        numbersPanel.add(pointButton);
+        numbersPanel.add(signButton);
     }
 
     private void addOperationsGrid() {
