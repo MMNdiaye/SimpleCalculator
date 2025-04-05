@@ -1,26 +1,29 @@
 package sn.ndiaye.domain;
 
+import java.math.BigDecimal;
+
 public class Calculator {
     private final static String MATH_ERROR = "MATH ERROR";
 
-    public String result(Number n1, Number n2, String operation) {
+    public String result(BigDecimal n1, BigDecimal n2, String operation) {
+
         String result = "";
         try {
             switch (operation) {
                 case "+":
-                    result = plus(n1, n2);
+                    result = String.valueOf(n1.add(n2));
                     break;
 
                 case "-":
-                    result = minus(n1, n2);
+                    result = String.valueOf(n1.subtract(n2));
                     break;
 
                 case "*":
-                    result = multiply(n1, n2);
+                    result = String.valueOf(n1.multiply(n2));
                     break;
 
                 case "/":
-                    result = divide(n1, n2);
+                    result = String.valueOf(n1.divide(n2));
             }
             return result;
         } catch (ArithmeticException e) {
@@ -29,7 +32,7 @@ public class Calculator {
     }
 
     private String plus(Number n1, Number n2) {
-        return String.valueOf(n1.doubleValue() + n2.doubleValue());
+        return "";
     }
 
     private String minus(Number n1, Number n2) {
