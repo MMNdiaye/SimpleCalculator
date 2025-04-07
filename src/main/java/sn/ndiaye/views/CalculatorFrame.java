@@ -1,9 +1,12 @@
 package sn.ndiaye.views;
 
+import sn.ndiaye.domain.Calculator;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 import java.util.Arrays;
 
 
@@ -90,12 +93,40 @@ public class CalculatorFrame extends JFrame {
     }
 
     private void addOperationButtons() {
-        operationsPanel.add(new JButton("+"));
-        operationsPanel.add(new JButton("-"));
-        operationsPanel.add(new JButton("*"));
-        operationsPanel.add(new JButton("/"));
-        operationsPanel.add(new JButton("del"));
-        operationsPanel.add(new JButton("="));
+        JButton[] opButtons = new JButton[6];
+        String[] operations = {"+", "-", "*", "/", "C", "="};
+        for (int i = 0; i < opButtons.length; i++) {
+            opButtons[i] = new JButton(operations[i]);
+
+            if (opButtons[i].getText().matches("[\\+\\-\\*\\/]")) // arithmetic operation
+                opButtons[i].addActionListener((ActionEvent e) -> {
+                    JButton btn = (JButton) e.getSource();
+                    inputDisplay.setText(inputDisplay.getText() + btn.getText());
+                });
+
+            else if (opButtons[i].getText().equals("C"))
+                opButtons[i].addActionListener((ActionEvent e) -> {
+                    JButton btn = (JButton) e.getSource();
+                    inputDisplay.setText("");
+                });
+
+            else // '=' button pressed
+                opButtons[i].addActionListener((ActionEvent e) -> {
+                    String fullOperation = inputDisplay.getText();
+                    String pattern = "\\d+[\\+\\-\\*\\/]\\d+";
+
+                    if (fullOperation.matches(pattern)) {
+                        String[] nums = fullOperation.split("[\\+\\-\\*\\/]");
+                        String[] operation = fullOperation.split("\\d+");
+                        BigDecimal num1 = new BigDecimal(nums[0]);
+                        BigDecimal num2 = new BigDecimal(nums[1]);
+                        inputDisplay.setText(fullOperation + "=" +
+                                new Calculator().result(num1, num2, operation[1]));
+                    }
+                });
+
+            operationsPanel.add(opButtons[i]);
+        }
     }
 
     public static void main(String[] args) {
