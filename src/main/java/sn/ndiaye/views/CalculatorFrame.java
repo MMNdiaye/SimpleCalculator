@@ -1,6 +1,7 @@
 package sn.ndiaye.views;
 
 import sn.ndiaye.domain.Calculator;
+import sn.ndiaye.domain.Controller;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,11 +15,12 @@ public class CalculatorFrame extends JFrame {
     private JTextField inputDisplay;
     private static Color inputForeColor = Color.GREEN;
     private static Color inputBgColor = Color.BLACK;
+    private Controller controller;
 
     private JPanel numbersPanel;
     private JPanel operationsPanel;
 
-    public CalculatorFrame() {
+    public CalculatorFrame(Controller controller) {
         this.setTitle("Calculator");
         this.setSize(300, 400);
         this.setResizable(false);
@@ -28,6 +30,8 @@ public class CalculatorFrame extends JFrame {
         addNumbersGrid();
         addOperationsGrid();
         this.setVisible(true);
+
+        this.controller = controller;
     }
 
     private void addInputDisplay() {
@@ -96,40 +100,35 @@ public class CalculatorFrame extends JFrame {
         JButton[] opButtons = new JButton[6];
         String[] operations = {"+", "-", "*", "/", "C", "="};
         for (int i = 0; i < opButtons.length; i++) {
+            // Text on buttons
             opButtons[i] = new JButton(operations[i]);
 
+            // Action on arithmetic buttons press
             if (opButtons[i].getText().matches("[\\+\\-\\*\\/]")) // arithmetic operation
                 opButtons[i].addActionListener((ActionEvent e) -> {
                     JButton btn = (JButton) e.getSource();
                     inputDisplay.setText(inputDisplay.getText() + btn.getText());
                 });
 
+            // Action on clear button press
             else if (opButtons[i].getText().equals("C"))
                 opButtons[i].addActionListener((ActionEvent e) -> {
                     JButton btn = (JButton) e.getSource();
                     inputDisplay.setText("");
                 });
 
-            else // '=' button pressed
+            // Action on '=' button press
+            else
                 opButtons[i].addActionListener((ActionEvent e) -> {
-                    String fullOperation = inputDisplay.getText();
-                    String pattern = "\\d+[\\+\\-\\*\\/]\\d+";
+                    controller.process();
 
-                    if (fullOperation.matches(pattern)) {
-                        String[] nums = fullOperation.split("[\\+\\-\\*\\/]");
-                        String[] operation = fullOperation.split("\\d+");
-                        BigDecimal num1 = new BigDecimal(nums[0]);
-                        BigDecimal num2 = new BigDecimal(nums[1]);
-                        inputDisplay.setText(fullOperation + "=" +
-                                new Calculator().result(num1, num2, operation[1]));
-                    }
                 });
 
             operationsPanel.add(opButtons[i]);
         }
     }
 
-    public static void main(String[] args) {
-        new CalculatorFrame();
+    public JTextField getInputDisplay() {
+        return inputDisplay;
     }
 }
