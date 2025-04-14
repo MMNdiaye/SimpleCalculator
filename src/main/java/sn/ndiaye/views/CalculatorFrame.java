@@ -20,6 +20,7 @@ public class CalculatorFrame extends JFrame {
     private JPanel numbersPanel;
     private JPanel operationsPanel;
 
+
     public CalculatorFrame(Controller controller) {
         this.setTitle("Calculator");
         this.setSize(300, 400);
@@ -113,19 +114,41 @@ public class CalculatorFrame extends JFrame {
             // Action on clear button press
             else if (opButtons[i].getText().equals("C"))
                 opButtons[i].addActionListener((ActionEvent e) -> {
-                    JButton btn = (JButton) e.getSource();
+                    enableAllButtons();
                     inputDisplay.setText("");
                 });
 
             // Action on '=' button press
             else
                 opButtons[i].addActionListener((ActionEvent e) -> {
+                    disableAllButtons();
                     controller.process();
-
                 });
 
             operationsPanel.add(opButtons[i]);
         }
+    }
+
+    private void disableAllButtons() {
+        Arrays.stream(numbersPanel.getComponents())
+                .filter(c -> c instanceof JButton)
+                .forEach(c -> c.setEnabled(false));
+
+        Arrays.stream(operationsPanel.getComponents())
+                .filter(c -> c instanceof JButton &&
+                        !((JButton) c).getText().equals("C"))
+                .forEach(c -> c.setEnabled(false));
+    }
+
+    private void enableAllButtons() {
+        Arrays.stream(numbersPanel.getComponents())
+                .filter(c -> c instanceof JButton)
+                .forEach(c -> c.setEnabled(true));
+
+        Arrays.stream(operationsPanel.getComponents())
+                .filter(c -> c instanceof JButton)
+                .forEach(c -> c.setEnabled(true));
+
     }
 
     public JTextField getInputDisplay() {
