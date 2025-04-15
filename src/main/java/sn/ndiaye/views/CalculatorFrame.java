@@ -30,7 +30,6 @@ public class CalculatorFrame extends JFrame {
         addInputDisplay();
         addNumbersGrid();
         addOperationsGrid();
-        this.setVisible(true);
 
         this.controller = controller;
     }

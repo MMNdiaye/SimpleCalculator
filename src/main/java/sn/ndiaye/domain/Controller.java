@@ -35,18 +35,23 @@ public final class Controller {
     public void process() {
         String fullOperation = window.getInputDisplay().getText();
         String result = "";
-        if (syntaxChecker.check(fullOperation)) {
+        //if (syntaxChecker.check(fullOperation)) {
             // For the future, implements order manager
-            String splitPattern = "(?<=\\d)(?=[\\+\\-\\*\\/])";
-            String[] nums = fullOperation.split(splitPattern);
-            String[] operation = fullOperation.split("\\d+");
+            String numSplitPattern = "(?<=\\d)([\\+\\-\\*\\/])";
+            String[] nums = fullOperation.split(numSplitPattern);
+            String opSplitPattern = "\\d+|(?<=[\\+\\-\\*\\/])(\\-)";
+            String[] operation = fullOperation.split(opSplitPattern);
             BigDecimal num1 = new BigDecimal(nums[0]);
             BigDecimal num2 = new BigDecimal(nums[1]);
             result = calculator.result(num1, num2, operation[1]);
-        }
+        //}
 
-        else
-            result = syntaxChecker.SYNTAX_ERROR;
+        //else
+            //result = syntaxChecker.SYNTAX_ERROR;
         window.getInputDisplay().setText(result);
+    }
+
+    public void start() {
+        this.window.setVisible(true);
     }
 }
