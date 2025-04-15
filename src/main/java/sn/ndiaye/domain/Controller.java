@@ -37,7 +37,8 @@ public final class Controller {
         String result = "";
         if (syntaxChecker.check(fullOperation)) {
             // For the future, implements order manager
-            String[] nums = fullOperation.split("[\\+\\-\\*\\/]");
+            String splitPattern = "(?<=\\d)(?=[\\+\\-\\*\\/])";
+            String[] nums = fullOperation.split(splitPattern);
             String[] operation = fullOperation.split("\\d+");
             BigDecimal num1 = new BigDecimal(nums[0]);
             BigDecimal num2 = new BigDecimal(nums[1]);
