@@ -121,7 +121,8 @@ public class CalculatorFrame extends JFrame {
             else
                 opButtons[i].addActionListener((ActionEvent e) -> {
                     disableAllButtons();
-                    controller.process();
+                    String fullOperation = inputDisplay.getText();
+                    controller.process(fullOperation);
                 });
 
             operationsPanel.add(opButtons[i]);

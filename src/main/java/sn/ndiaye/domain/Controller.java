@@ -32,10 +32,9 @@ public final class Controller {
         syntaxChecker = new SimpleSyntaxChecker();
     }
 
-    public void process() {
-        String fullOperation = window.getInputDisplay().getText();
+    public void process(String fullOperation) {
         String result = "";
-        //if (syntaxChecker.check(fullOperation)) {
+        if (syntaxChecker.check(fullOperation)) {
             // For the future, implements order manager
             String numSplitPattern = "(?<=\\d)([\\+\\-\\*\\/])";
             String[] nums = fullOperation.split(numSplitPattern);
@@ -44,14 +43,26 @@ public final class Controller {
             BigDecimal num1 = new BigDecimal(nums[0]);
             BigDecimal num2 = new BigDecimal(nums[1]);
             result = calculator.result(num1, num2, operation[1]);
-        //}
+        }
 
-        //else
-            //result = syntaxChecker.SYNTAX_ERROR;
+        else
+            result = syntaxChecker.SYNTAX_ERROR;
         window.getInputDisplay().setText(result);
     }
 
     public void start() {
         this.window.setVisible(true);
+    }
+
+    public CalculatorFrame getWindow() {
+        return window;
+    }
+
+    public Calculator getCalculator() {
+        return calculator;
+    }
+
+    public SyntaxChecker getSyntaxChecker() {
+        return syntaxChecker;
     }
 }
