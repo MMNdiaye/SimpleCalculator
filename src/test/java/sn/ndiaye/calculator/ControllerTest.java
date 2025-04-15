@@ -57,4 +57,12 @@ class ControllerTest {
         assertThat(result).isEqualTo("-21");
     }
 
+    @Test
+    void controller_should_process_simple_operations_with_decimals() {
+        String operation = "3.4*7.1";
+        simpleController.process(operation);
+        String result = simpleController.getWindow().getInputDisplay().getText();
+        assertThat(result).isEqualTo("24.14");
+    }
+
 }

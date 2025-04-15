@@ -38,7 +38,7 @@ public final class Controller {
             // For the future, implements order manager
             String numSplitPattern = "(?<=\\d)([\\+\\-\\*\\/])";
             String[] nums = fullOperation.split(numSplitPattern);
-            String opSplitPattern = "\\d+|(?<=[\\+\\-\\*\\/])(\\-)";
+            String opSplitPattern = "\\d+(\\.\\d+)?|(?<=[\\+\\-\\*\\/])(\\-)";
             String[] operation = fullOperation.split(opSplitPattern);
             BigDecimal num1 = new BigDecimal(nums[0]);
             BigDecimal num2 = new BigDecimal(nums[1]);

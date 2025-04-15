@@ -24,6 +24,11 @@ public class Calculator {
 
                 case "/":
                     result = String.valueOf(n1.divide(n2));
+                    break;
+
+                default:
+                    result = MATH_ERROR;
+                    break;
             }
             return result;
         } catch (ArithmeticException e) {
